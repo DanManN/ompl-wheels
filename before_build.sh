@@ -6,7 +6,7 @@ build_target="${OMPL_BUILD_TARGET:-linux}"
 build_arch="${OMPL_BUILD_ARCH:-x86_64}"
 python_version=$(python3 -c 'import sys; v=sys.version_info; print(f"{v.major}.{v.minor}")')
 python_include_path=$(python3 -c "from sysconfig import get_paths as gp; print(gp()['include'])")
-boost_version="1.82.0"
+boost_version="1.85.0"
 
 # Work inside a temporary directory.
 cd $(mktemp -d -t "ompl-wheels.XXX")
@@ -14,15 +14,17 @@ cd $(mktemp -d -t "ompl-wheels.XXX")
 # Need latest for this PR with Mac fixes:
 # https://github.com/ompl/pyplusplus/pull/1
 pip install git+https://github.com/ompl/pyplusplus
-pip install cmake pygccxml numpy build ninja
+
+# NOTE: Hold back numpy<2.0 until Boost.Python integrates required fixes. Not
+# done as of boost==1.85.
+pip install cmake pygccxml numpy==1.26.4 build ninja
 
 if [ "${build_target}" == "linux" ]; then
-
     # Install CastXML dependency.
     git clone --depth 1 https://github.com/CastXML/CastXML
     pushd CastXML
     mkdir -p build && cd build
-    cmake -GNinja -DCMAKE_BUILD_TYPE=Release ..
+    cmake -GNinja -DCMAKE_BUILD_TYPE=Release -DCLANG_RESOURCE_DIR=$(clang -print-resource-dir) ..
     cmake --build .
     ninja install
     popd
