@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04, macos-13]
+        os: [ubuntu-20.04]
         arch: [x86_64]
         include:
           - os: macos-13
@@ -31,7 +31,7 @@ jobs:
             # All systems
           CIBW_BEFORE_ALL: ./install_deps.sh
           CIBW_BEFORE_BUILD: ./before_build.sh
-          CIBW_BUILD: cp3{8,9,10,11,12}-macosx_{x86_64,arm64} cp3{8,9,10,11,12}-manylinux_x86_64
+          CIBW_BUILD: cp3{8,9,10,11,12}-manylinux_x86_64
           CIBW_BUILD_VERBOSITY: 1
       - uses: actions/upload-artifact@v3
         with:
