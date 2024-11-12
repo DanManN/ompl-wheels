@@ -17,7 +17,7 @@ pip install git+https://github.com/ompl/pyplusplus
 
 # NOTE: Hold back numpy<2.0 until Boost.Python integrates required fixes. Not
 # done as of boost==1.85.
-pip install cmake pygccxml numpy==1.26.4 build ninja
+pip install cmake pygccxml numpy<2 build ninja
 
 if [ "${build_target}" == "linux" ]; then
     # Install CastXML dependency.
