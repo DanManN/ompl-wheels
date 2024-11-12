@@ -11,9 +11,6 @@ jobs:
       matrix:
         os: [ubuntu-20.04]
         arch: [x86_64]
-        include:
-          - os: macos-13
-            arch: arm64
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
@@ -25,9 +22,6 @@ jobs:
           # Linux
           CIBW_MANYLINUX_X86_64_IMAGE: "quay.io/pypa/manylinux_2_28_x86_64"
           CIBW_ENVIRONMENT_LINUX: OMPL_BUILD_TARGET="linux" OMPL_BUILD_ARCH="${{ matrix.arch }}"
-          # OS X
-          CIBW_ENVIRONMENT_MACOS: OMPL_BUILD_TARGET="macos" OMPL_BUILD_ARCH="${{ matrix.arch }}"
-          CIBW_ARCHS_MACOS: ${{ matrix.arch }}
             # All systems
           CIBW_BEFORE_ALL: ./install_deps.sh
           CIBW_BEFORE_BUILD: ./before_build.sh
